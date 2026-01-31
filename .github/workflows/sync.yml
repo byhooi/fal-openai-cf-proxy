@@ -23,14 +23,14 @@ jobs:
       uses: actions/github-script@v6
       with:
         script: |
-          // 👇 1. 设置上游仓库地址 (已帮你填好)
+          // 👇 1. 设置上游仓库地址
           const upstream_repo = "Loongphy/fal-openai-cf-proxy";
           
           // 👇 2. 设置分支 (你这个仓库默认是 main)
           const branch = "main"; 
 
           try {
-            const exec = require('@actions/exec');
+            // ❌ 删除了报错的 require 行，直接使用内置的 exec
             
             // 配置机器人身份
             await exec.exec("git config --global user.name 'GitHub Actions'");
@@ -48,6 +48,7 @@ jobs:
               await exec.exec(`git merge upstream/${branch} --no-edit`);
             } catch (error) {
               console.log("⚠️ Merge 冲突，尝试自动解决...");
+              // 这里的 throw 会被外层捕获并报告失败
               throw error;
             }
 
